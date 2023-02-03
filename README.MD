@@ -7,7 +7,7 @@
 <li>Morgan package Middleware logging</li>
 <li>Postman Query</li>
 <li>Nodemon Package</li>
-<li>Jest API Testing</li>
+<li>Jest API Testing - SuperTest</li>
 <li>Handlebars Templating</li>
 
 </ul>
