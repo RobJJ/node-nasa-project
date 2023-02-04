@@ -3,6 +3,8 @@ const app = require("../../app");
 //
 // Lets write some API tests! -> Use SuperTest library - alternating between the jest functionality and the superTest built on func
 //
+//
+// GET REQUEST TESTING
 describe("Test GET /launches", () => {
   test("It should respond with 200 success", async () => {
     // pass the app into the superTest
@@ -15,6 +17,8 @@ describe("Test GET /launches", () => {
   //
 });
 //
+//
+// POST REQUEST TESTING
 describe("Test POST /launch", () => {
   // Code sitting here can be resused in the diff tests..
   const completeLaunchData = {
