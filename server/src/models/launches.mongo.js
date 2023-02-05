@@ -24,6 +24,12 @@ const launchesSchema = new mongoose.Schema({
   },
 });
 
+// first argument is always singular name of the name this model represents... mongoose then lowercases it and plurals it.. which it uses to talk to the collection with that new name
+// Connects launchesSchema with the "launches" collections
+// Collections must be plural
+
+module.exports = mongoose.model("Launch", launchesSchema);
+
 // NOSQL approach
 //target: {
 // planets stored in their own collection, look for id

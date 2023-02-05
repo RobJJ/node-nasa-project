@@ -2,9 +2,9 @@ const fs = require("fs");
 const path = require("path");
 const { parse } = require("csv-parse");
 //
+const planets = require("./planets.mongo");
 //
 
-const habitablePlanets = [];
 function isHabitablePlanet(planet) {
   return (
     //some checks for planetary possiblity
@@ -26,26 +26,55 @@ function loadPlanetsData() {
           columns: true,
         })
       )
-      .on("data", (data) => {
+      .on("data", async (data) => {
         if (isHabitablePlanet(data)) {
-          habitablePlanets.push(data);
+          savePlanet(data);
+          // mongoDB - follows mongoose schema structure
         }
       })
       .on("error", (err) => {
         console.log("Something went wrong: ", err);
         reject(err);
       })
-      .on("end", () => {
-        console.log(`${habitablePlanets.length} planets found!!`);
+      .on("end", async () => {
+        // get amount of planets in mongo collection
+        const countPlanetsFound = (await getAllPlanets()).length;
+        console.log(`${countPlanetsFound} planets found!!`);
         resolve();
       });
   });
 }
-//
-function getAllPlanets() {
-  return habitablePlanets;
+// lecture 169 for more info on this find operation called on the model
+async function getAllPlanets() {
+  return await planets.find(
+    {},
+    {
+      //lets use this para to tell mongoose to exclude some stuff. 1 is yes, 0 is no for inclusive props...
+      _id: 0,
+      __v: 0,
+    }
+  );
 }
 
+async function savePlanet(planet) {
+  // insert + update = upset -> like an insert but only inserts if the document doesnt exist.. perfect for onstart (lecture170)
+  try {
+    await planets.updateOne(
+      {
+        // match name in csv file
+        keplerName: planet.kepler_name,
+      },
+      {
+        keplerName: planet.kepler_name,
+      },
+      {
+        upsert: true,
+      }
+    );
+  } catch (error) {
+    console.error(`Could not save a planet: ${error}`);
+  }
+}
 //
 //
 module.exports = {

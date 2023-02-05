@@ -6,9 +6,9 @@ const {
 } = require("../../models/launches.model");
 //
 // take data as it is in the model, and then manipulates it into something we can work with json
-function httpGetAllLaunches(req, res) {
+async function httpGetAllLaunches(req, res) {
   // want to return the list of values from launches MAP
-  return res.status(200).json(getAllLaunches());
+  return res.status(200).json(await getAllLaunches());
 }
 
 function httpAddNewLaunch(req, res) {
