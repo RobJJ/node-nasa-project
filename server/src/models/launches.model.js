@@ -1,3 +1,4 @@
+const axios = require("axios");
 const launchesDataBase = require("./launches.mongo");
 const planets = require("./planets.mongo");
 
@@ -17,6 +18,12 @@ const launch = {
 
 saveLaunch(launch);
 
+const SPACEX_API_URL = `https://api.spacexdata.com/v4/launches/query`;
+
+async function loadLaunchData(params) {
+  console.log("getting data from api");
+  await axios.post(SPACEX_API_URL, {});
+}
 //
 async function existLaunchWithId(launchId) {
   // use mongoose
@@ -49,7 +56,7 @@ async function getAllLaunches() {
 }
 
 async function saveLaunch(launch) {
-  // add validation on planets model
+  // add validation on planets model -
   const planet = await planets.findOne({
     keplerName: launch.target,
   });
@@ -102,6 +109,7 @@ async function abortLaunchById(launchId) {
 }
 // Lets use the built in JS MAP data structure
 module.exports = {
+  loadLaunchData,
   existLaunchWithId,
   getAllLaunches,
   scheduleNewLaunch,

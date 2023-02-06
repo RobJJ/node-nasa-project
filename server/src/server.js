@@ -1,11 +1,13 @@
 const http = require("http");
+require("dotenv").config();
+
 const { mongoConnect } = require("./services/mongo");
 
 // One way of creating express server - added benefit of seperating the express code from server code.. express is just a fancy listening function!
 const app = require("./app");
 
 const { loadPlanetsData } = require("./models/planets.model");
-
+const { loadLaunchData } = require("./models/launches.model");
 // Dev can setup their own chosen PORT - env
 const PORT = process.env.PORT || 8000;
 const server = http.createServer(app);
@@ -16,7 +18,7 @@ async function startServer() {
 
   await mongoConnect();
   await loadPlanetsData();
-
+  await loadLaunchData();
   server.listen(PORT, () => {
     console.log(`Listening on PORT: ${PORT}... yea boi!`);
   });
